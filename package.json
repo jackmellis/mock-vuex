@@ -1,0 +1,53 @@
+{
+  "name": "mock-vuex",
+  "version": "0.1.0",
+  "description": "A Mock version of Vuex to make unit testing easier",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "ava",
+    "watch": "ava --watch",
+    "coverage": "nyc ava",
+    "lint": "eslint lib",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard",
+    "lcov-fix": "node node_modules/jpex-build-tools/lcov-fix",
+    "travis-prepublish": "node node_modules/jpex-build-tools/travis-prepublish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackmellis/mock-vuex.git"
+  },
+  "ava": {
+    "files": "spec/**/*.spec.js",
+    "source": "lib/**/*.js",
+    "require": [
+      "./spec/helpers/setup.js"
+    ],
+    "concurrency": 8
+  },
+  "author": "Jack Ellis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jackmellis/mock-vuex/issues"
+  },
+  "homepage": "https://github.com/jackmellis/mock-vuex#readme",
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "ava-spec": "^1.1.0",
+    "browser-env": "^2.0.31",
+    "eslint": "^3.19.0",
+    "jpex": "^2.0.0",
+    "jpex-build-tools": "github:jpex-js/jpex-build-tools",
+    "jpex-defaults": "^2.0.0",
+    "module-alias": "^2.0.0",
+    "nyc": "^10.3.2",
+    "publish-please": "^2.3.1",
+    "sinon": "^2.3.2",
+    "vue": "^2.3.3",
+    "vuenit": "^0.4.2",
+    "vuex": "^2.3.1"
+  },
+  "peerDependencies": {
+    "vue": "2.x"
+  }
+}
