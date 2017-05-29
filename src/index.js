@@ -16,7 +16,7 @@ module.exports = function (config) {
 };
 
 module.exports.config = {
-  Promise : Promise //eslint-disable-lin
+  Promise : Promise //eslint-disable-line
 };
 
 var reactify = require('./reactify');
