@@ -131,7 +131,7 @@ Store.prototype.expect = function (method, name, count) {
   this.$$expect.push(when);
   return result;
 };
-Store.prototype.assert = function (method, name, count) {
+Store.prototype.assert = function () {
   var $$expect = this.$$expect.splice(0);
   while ($$expect.length){
     var expected = $$expect.shift();
@@ -143,7 +143,7 @@ Store.prototype.assert = function (method, name, count) {
       throw new Error('Expected a call for {method : ' + expected.method + ', name : ' + expected.name + '}');
     }
   }
-}
+};
 
 Store.prototype.$$doWhen = function (method, name) {
   function findMatchingRequest() {

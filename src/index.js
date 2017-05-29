@@ -14,8 +14,9 @@ module.exports = function (config) {
 
   return store;
 };
+
 module.exports.config = {
-  Promise : Promise
+  Promise : Promise //eslint-disable-lin
 };
 
 var reactify = require('./reactify');
