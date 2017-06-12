@@ -6,7 +6,7 @@ function create(config, store, state, path) {
     };
     Object.keys(config.state).forEach(function (key) {
       var v = config.state[key];
-      if (typeof v === 'object'){
+      if (Object.prototype.toString.call(v) === '[object Object]'){
         config.modules[key] = v;
       }
     });

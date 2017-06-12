@@ -40,10 +40,13 @@ Store.prototype.dispatch = function (name, payload) {
     getters : getters
   };
 
-  var action = self.$$doWhen('dispatch', name, context, payload);
-  return Promise.resolve().then(function () {
-    return action;
-  });
+  var action;
+  try{
+    action = Promise.resolve(self.$$doWhen('dispatch', name, context, payload));
+  }catch(err){
+    action = Promise.reject(err);
+  }
+  return action;
 };
 
 Store.prototype.commit = function (name, payload) {

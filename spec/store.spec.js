@@ -481,7 +481,12 @@ test.group('when', function (test) {
     store.when('dispatch').throw();
 
     t.throws(() => store.commit('COMMIT'));
-    t.throws(() => store.dispatch('dispatch'));
+    return store.dispatch('dispatch')
+      .then(() => {
+        t.fail()
+      }, () => {
+        t.pass()
+      });
   });
 });
 
