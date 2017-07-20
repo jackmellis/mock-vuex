@@ -167,6 +167,33 @@ test.group('getters', function (test) {
 
     t.is(store.getters['moduleA/isRootLoading'], true);
   });
+  test('getter has access to root getters', function (t) {
+    let store = mock({
+      getters : {
+        rootGetter(){
+          return 'root';
+        }
+      },
+      modules : {
+        moduleA : {
+          getters : {
+            fromRootGetter(state, getters, rootState, rootGetters){
+              return rootGetters['rootGetter'] + ' moduleA';
+            }
+          }
+        },
+        moduleB : {
+          getters : {
+            fromModuleAGetter(state, getters, rootState, rootGetters){
+              return rootGetters['moduleA/fromRootGetter'] + ' moduleB';
+            }
+          }
+        }
+      }
+    });
+
+    t.is(store.getters['moduleB/fromModuleAGetter'], 'root moduleA moduleB');
+  });
 });
 
 test.group('mutations', function (test) {

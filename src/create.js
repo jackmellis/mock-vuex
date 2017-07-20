@@ -83,7 +83,7 @@ function createGetters(store, modules, state, getters, config, path) {
     var property = {
       enumerable : true,
       get : function () {
-        return value(state, localGetters, store.state);
+        return value(state, localGetters, store.state, store.getters);
       }
     };
 
