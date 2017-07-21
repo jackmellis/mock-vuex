@@ -98,9 +98,9 @@ function createCommits(store, modules, state, config, path){
     var value = config[key];
     var getterKey = path.concat(key).join('/');
     if (typeof value !== 'function'){
-      store.when(getterKey).return(value);
+      store.when('commit', getterKey).return(value);
     }else{
-      store.when(getterKey).call(value);
+      store.when('commit', getterKey).call(value);
     }
   });
 }
@@ -110,9 +110,9 @@ function createActions(store, modules, state, config, path){
     var value = config[key];
     var getterKey = path.concat(key).join('/');
     if (typeof value !== 'function'){
-      store.when(getterKey).return(value);
+      store.when('dispatch', getterKey).return(value);
     }else{
-      store.when(getterKey).call(value);
+      store.when('dispatch', getterKey).call(value);
     }
   });
 }

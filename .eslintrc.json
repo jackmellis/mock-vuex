@@ -1,9 +1,11 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true
+        "commonjs": true,
+        "node" : true
     },
     "globals" : {
+      "Promise" : false
     },
     "extends": "eslint:recommended",
     "plugins" : [],
