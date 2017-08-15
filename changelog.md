@@ -1,8 +1,9 @@
 # Change Log
 
 ## 0.1.3
-- Module actions/mutations/getters can now be non-namespaced by supplying `namespaced : false` in the configuration.
-- All modules are namespaced by default, but this can be switched off by setting `mockVuex.config.autoNamespace = false`
+- Module actions/mutations/getters can now be non-namespaced by supplying `namespaced : false` in the configuration
+- All modules are namespaced by default, but this can be switched off by setting `mockVuex.config.autoNamespace = false`-
+- 0.2 will incorporate registerModule and unregisterModule. For now, placeholder methods have been added so method calls will not fall over.
 
 ## 0.1.2
 - Added missing `rootGetters` argument from the getters method [#4](https://github.com/jackmellis/mock-vuex/issues/4)

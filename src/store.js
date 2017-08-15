@@ -149,6 +149,12 @@ Store.prototype.assert = function () {
     }
   }
 };
+Store.prototype.registerModule = function (/*moduleName(s), object*/) {
+
+};
+Store.prototype.unregisterModule = function (/*moduleName(s)*/) {
+
+};
 
 Store.prototype.$$doWhen = function (method, name) {
   var self = this;
