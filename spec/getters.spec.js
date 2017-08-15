@@ -42,6 +42,26 @@ test.group('getters', function (test) {
     t.is(store.getters['moduleA/moduleB/getterA'], 'A');
     t.is(store.getters['moduleA/moduleB/getterB'], 'B');
   });
+  test('it creates non namespaced getters with nested module paths', function (t) {
+    let store = mock({
+      modules : {
+        moduleA : {
+          modules : {
+            moduleB : {
+              namespaced : false,
+              getters : {
+                getterA : () => 'A',
+                getterB : () => 'B'
+              }
+            }
+          }
+        }
+      }
+    });
+
+    t.is(store.getters['getterA'], 'A');
+    t.is(store.getters['getterB'], 'B');
+  });
   test('getter has access to local state', function (t) {
     let store = mock({
       moduleA : {

@@ -42,6 +42,24 @@ test.group('mutations', function (test) {
     store.commit('moduleA/TEST');
     t.true(spy.called);
   });
+  test('calls a non namespaced nested mutation method', function (t) {
+    let spy = t.context.sinon.spy();
+
+    let store = mock({
+      moduleA : {
+        namespaced : false,
+        mutations : {
+          TEST : spy
+        }
+      }
+    });
+
+    store.commit('moduleA/TEST');
+    t.false(spy.called);
+
+    store.commit('TEST');
+    t.true(spy.called);
+  });
   test('has access to the local state', function (t) {
     return new Promise(resolve => {
       let store = mock({

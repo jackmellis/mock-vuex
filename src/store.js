@@ -1,4 +1,5 @@
-var Promise = require('./').config.Promise;
+var globalConfig = require('.');
+var Promise = globalConfig.config.Promise;
 
 var Store = function () {
   this.state = {};
@@ -117,6 +118,7 @@ Store.prototype.otherwise = function () {
   this.$$when.reverse();
   var result = this.when();
   this.$$when.reverse();
+  this.$$when[0].otherwise = true;
   return result;
 };
 Store.prototype.expect = function (method, name, count) {
@@ -149,42 +151,52 @@ Store.prototype.assert = function () {
 };
 
 Store.prototype.$$doWhen = function (method, name) {
-  function findMatchingRequest() {
-    var $$when = this.$$when.slice().reverse();
+  var self = this;
+  function findMatchingRequests() {
+    var $$when = self.$$when.slice().reverse();
 
-    for (var x = 0, l = $$when.length; x < l; x++){
-      var when = $$when[x];
-      if (when.method instanceof RegExp){
-        if (!when.method.test(method)){
-          continue;
+    return $$when
+      .filter(function (when) {
+        if (when.method instanceof RegExp){
+          if (!when.method.test(method)){
+            return false;
+          }
+        }else if (when.method !== method){
+          return false;
         }
-      }else if (when.method !== method){
-        continue;
-      }
 
-      if (when.name instanceof RegExp){
-        if (!when.name.test(name)){
-          continue;
+        if (when.name instanceof RegExp){
+          if (!when.name.test(name)){
+            return false;
+          }
+        }else if (when.name !== name){
+          return false;
         }
-      }else if (when.name !== name){
-        continue;
-      }
-      return when;
-    }
+        return true;
+      })
+      .filter(function (when, i, arr) {
+        if (i === 0){
+          return true;
+        }else if (arr.length > 1 && when.otherwise){
+          return false;
+        }else{
+          return true;
+        }
+      });
   }
 
   method = method.toLowerCase();
   var args = Array.prototype.slice.call(arguments, 2);
-  var when = findMatchingRequest.call(this);
-  if (when){
-    when.count++;
-  }
+  var whens = findMatchingRequests();
 
-  if (when && when.callback){
-    return when.callback.apply(this, args);
-  }else{
-    return args[args.length-1]; // just return the payload again
-  }
+  return whens.reduce(function (x, when) {
+    when.count++;
+    if (when.callback){
+      return when.callback.apply(self, args);
+    }else{
+      return x;
+    }
+  }, args[args.length - 1]);
 };
 
 module.exports = Store;

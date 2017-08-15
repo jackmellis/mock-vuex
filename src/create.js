@@ -1,5 +1,7 @@
+var globalConfig = require('.');
+
 function create(config, store, state, path) {
-  if (!config.state && !config.getters && !config.mutations && !config.actions && !config.modules){
+  if (!config.state && !config.getters && !config.mutations && !config.actions && !config.modules && config.namespaced === undefined){
     config = {
       state : config,
       modules : {}
@@ -10,6 +12,9 @@ function create(config, store, state, path) {
         config.modules[key] = v;
       }
     });
+  }
+  if (config.namespaced === undefined){
+    config.namespaced = globalConfig.config.autoNamespace;
   }
   if (!config.state){
     config.state = {};
@@ -29,16 +34,16 @@ function create(config, store, state, path) {
 
   createState(store, store._modulesNamespaceMap, state, config.state, path);
 
-  createGetters(store, store._modulesNamespaceMap, state, store.getters, config.getters, path);
-  createCommits(store, store._modulesNamespaceMap, state, config.mutations, path);
-  createActions(store, store._modulesNamespaceMap, state, config.actions, path);
+  createGetters(store, store._modulesNamespaceMap, state, store.getters, config.getters, path, config.namespaced);
+  createCommits(store, store._modulesNamespaceMap, state, config.mutations, path, config.namespaced);
+  createActions(store, store._modulesNamespaceMap, state, config.actions, path, config.namespaced);
 
-  createModules(store, store._modulesNamespaceMap, state, config.modules, path);
+  createModules(store, store._modulesNamespaceMap, state, config.modules, path, config.namespaced);
 
   return store;
 }
 
-function createModules(store, modules, state, config, path) {
+function createModules(store, modules, state, config, path, namespaced) {
   Object.keys(config).forEach(function (key) {
     var module = config[key];
     var moduleKey = path.concat(key, '').join('/');
@@ -49,7 +54,7 @@ function createModules(store, modules, state, config, path) {
     modules[moduleKey] = modules[moduleKey] || generateModuleNamespace();
     modules[moduleKey].context.state = localState;
 
-    create(module, store, localState, path.concat(key));
+    create(module, store, localState, path.concat(key), namespaced);
   });
 }
 
@@ -69,8 +74,11 @@ function createState(store, modules, state, config) {
   });
 }
 
-function createGetters(store, modules, state, getters, config, path) {
+function createGetters(store, modules, state, getters, config, path, namespaced) {
   var localGetters = {};
+  if (!namespaced){
+    path = [];
+  }
 
   Object.keys(config).forEach(function (key) {
     var value = config[key];
@@ -93,7 +101,11 @@ function createGetters(store, modules, state, getters, config, path) {
   });
 }
 
-function createCommits(store, modules, state, config, path){
+function createCommits(store, modules, state, config, path, namespaced){
+  if (!namespaced){
+    path = [];
+  }
+
   Object.keys(config).forEach(function (key) {
     var value = config[key];
     var getterKey = path.concat(key).join('/');
@@ -105,7 +117,11 @@ function createCommits(store, modules, state, config, path){
   });
 }
 
-function createActions(store, modules, state, config, path){
+function createActions(store, modules, state, config, path, namespaced){
+  if (!namespaced){
+    path = [];
+  }
+
   Object.keys(config).forEach(function (key) {
     var value = config[key];
     var getterKey = path.concat(key).join('/');

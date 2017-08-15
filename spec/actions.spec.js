@@ -45,6 +45,66 @@ test.group('actions', function (test) {
       t.true(spy.called);
     });
   });
+  test('calls a non-namespaced method', async function (t) {
+    let {sinon} = t.context;
+    let spy1 = sinon.spy();
+    let spy2 = sinon.spy();
+    let spy3 = sinon.spy();
+
+    let store = mock({
+      rootModule: {
+        modules: {
+          moduleA : {
+            namespaced : false,
+            actions : {
+              test : spy1
+            }
+          },
+          moduleB : {
+            namespaced: false,
+            actions: {
+              test: spy2
+            }
+          },
+          moduleC : {
+            namespaced: true,
+            actions: {
+              test: spy3
+            }
+          }
+        }
+      }
+    });
+
+    await store.dispatch('test');
+    t.true(spy1.called);
+    t.true(spy2.called);
+    t.false(spy3.called);
+
+    await store.dispatch('rootModule/moduleC/test');
+    t.true(spy3.called);
+  });
+  test.serial('turns off namespacing by default', async function (t) {
+    let {sinon} = t.context;
+    let spy = sinon.spy();
+
+    mock.config.autoNamespace = false;
+    let store = mock({
+      moduleA : {
+        moduleB : {
+          actions : {
+            test : spy
+          }
+        }
+      }
+    });
+
+    await store.dispatch('moduleA/moduleB/test');
+    t.false(spy.called);
+    await store.dispatch('test');
+    t.true(spy.called);
+    mock.config.autoNamespace = true;
+  });
   test('always returns a promise', function (t) {
     let store = mock();
 

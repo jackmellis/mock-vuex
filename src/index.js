@@ -16,6 +16,7 @@ module.exports = function (config) {
 };
 
 module.exports.config = {
+  autoNamespace: true,
   Promise : Promise //eslint-disable-line
 };
 
