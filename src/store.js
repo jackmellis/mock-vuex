@@ -149,11 +149,35 @@ Store.prototype.assert = function () {
     }
   }
 };
-Store.prototype.registerModule = function (/*moduleName(s), object*/) {
-
+Store.prototype.registerModule = function (moduleNames, config) {
+  if (typeof moduleNames === 'string') {
+    moduleNames = [moduleNames];
+  }
+  var state = this.state;
+  moduleNames.forEach(function (key) {
+    if (!state[key]){
+      state[key] = {};
+    }
+    state = state[key];
+  });
+  create(config, this, state, moduleNames);
 };
-Store.prototype.unregisterModule = function (/*moduleName(s)*/) {
+Store.prototype.unregisterModule = function (moduleNames) {
+  var path = [].concat(moduleNames);
+  var name = path.pop();
+  var moduleKey = path.concat('').join('/');
 
+  var state = this.state;
+  path.forEach(function (key) {
+    state = state && state[key];
+  });
+
+  if (this._modulesNamespaceMap[moduleKey]) {
+    delete this._modulesNamespaceMap[moduleKey];
+  }
+  if (state && state[name]) {
+    delete state[name];
+  }
 };
 
 Store.prototype.$$doWhen = function (method, name) {
@@ -206,3 +230,5 @@ Store.prototype.$$doWhen = function (method, name) {
 };
 
 module.exports = Store;
+
+var create = require('./create');

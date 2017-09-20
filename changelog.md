@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.2.0
+- implemented registerModule and unregisterModule methods
+
 ## 0.1.3
 - Module actions/mutations/getters can now be non-namespaced by supplying `namespaced : false` in the configuration
 - All modules are namespaced by default, but this can be switched off by setting `mockVuex.config.autoNamespace = false`-
