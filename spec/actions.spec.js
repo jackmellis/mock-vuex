@@ -27,6 +27,21 @@ test.group('actions', function (test) {
         t.true(spy.called);
       });
   });
+  test('accepts an action object', function (t) {
+    let {sinon} = t.context;
+
+    let spy = sinon.spy();
+    let store = mock({
+      actions : {
+        test : spy
+      }
+    });
+
+    return store.dispatch({ type: 'test' })
+      .then(() => {
+        t.true(spy.called);
+      });
+  });
   test('calls a nested action method', function (t) {
     let {sinon} = t.context;
     let spy = sinon.spy();

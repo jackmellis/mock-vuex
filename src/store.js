@@ -18,6 +18,10 @@ var Store = function () {
 };
 Store.prototype.dispatch = function (name, payload) {
   var self = this;
+  if (typeof name === 'object') {
+    payload = name;
+    name = payload.type;
+  }
   var pathToAction = name.split('/');
   pathToAction.pop();
   var localState = pathToAction.reduce(function (last, current) {

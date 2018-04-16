@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.2.1
+- accept action objects i.e. `dispatch({ type: 'foo' })`
+
 ## 0.2.0
 - implemented registerModule and unregisterModule methods
 
