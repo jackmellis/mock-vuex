@@ -1,29 +1,28 @@
 {
   "name": "mock-vuex",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "A Mock version of Vuex to make unit testing easier",
-  "main": "src/index.js",
+  "main": "dist/mock-vuex.cjs.js",
+  "module": "dist/mock-vuex.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "ava",
-    "watch": "ava --watch",
-    "coverage": "nyc ava",
-    "lint": "eslint lib",
-    "publish-please": "publish-please",
-    "prepublish": "publish-please guard",
-    "lcov-fix": "node node_modules/jpex-build-tools/lcov-fix",
-    "travis-prepublish": "node node_modules/jpex-build-tools/travis-prepublish"
+    "test:debug": "node --inspect-brk node_modules/ava/profile",
+    "test:coverage": "nyc ava",
+    "test:watch": "ava --watch",
+    "lint": "yarn lint:js && yarn lint:ts",
+    "lint:js": "eslint src --ext ts",
+    "lint:ts": "tsc --noEmit",
+    "build:pre": "rimraf dist",
+    "build:js": "cross-env NODE_ENV=production rollup -c",
+    "build:ts": "tsc --outDir dist --emitDeclarationOnly",
+    "build:post": "rimraf dist/__tests__",
+    "build": "yarn build:pre && yarn build:js && yarn build:ts && yarn build:post",
+    "prepublishOnly": "yarn build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jackmellis/mock-vuex.git"
-  },
-  "ava": {
-    "files": "spec/**/*.spec.js",
-    "source": "lib/**/*.js",
-    "require": [
-      "./spec/helpers/setup.js"
-    ],
-    "concurrency": 8
   },
   "author": "Jack Ellis",
   "license": "MIT",
@@ -32,22 +31,40 @@
   },
   "homepage": "https://github.com/jackmellis/mock-vuex#readme",
   "devDependencies": {
-    "ava": "^0.19.1",
-    "ava-spec": "^1.1.0",
-    "browser-env": "^2.0.31",
-    "eslint": "^3.19.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/register": "^7.4.0",
+    "@types/sinon": "^7.0.11",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.6.0",
+    "ava": "^1.4.1",
+    "browser-env": "^3.2.6",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.17.2",
     "jpex": "^2.0.0",
-    "jpex-build-tools": "github:jpex-js/jpex-build-tools",
     "jpex-defaults": "^2.0.0",
-    "module-alias": "^2.0.0",
-    "nyc": "^10.3.2",
-    "publish-please": "^2.3.1",
-    "sinon": "^2.3.2",
+    "module-alias": "^2.2.0",
+    "nyc": "^13.3.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.10.1",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "sinon": "^7.3.1",
+    "typescript": "^3.4.3",
     "vue": "^2.3.3",
-    "vuenit": "^0.4.2",
-    "vuex": "^2.3.1"
+    "vuenit": "^1.2.0",
+    "vuex": "^3.1.0"
   },
   "peerDependencies": {
-    "vue": "2.x"
+    "vue": "^2.0.0",
+    "vuex": "^3.0.0"
+  },
+  "resolutions": {
+    "source-map-support": "^0.5.0",
+    "source-map": "^0.6.0"
   }
 }

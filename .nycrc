@@ -1,8 +1,8 @@
 {
   "lines" : 80,
   "branches" : 80,
-  "include" : ["src/**/*.js"],
-  "exclude" : [],
+  "include" : ["src/**/*.ts"],
+  "exclude" : ["**.test.ts"],
   "reporter" : ["html", "lcov", "text-summary"],
   "cache" : false,
   "all" : true,

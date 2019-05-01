@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.0
+- moved entire codebase to typescript and export d.ts files
+- dispatching from non-namespaced modules now works correctly
+- updated modulenamespace to work properly with latest mapState syntax
+- modules are no longer namespaced by default
+- added more instance method stubs i.e. `watch` and `replaceState`
+
 ## 0.2.1
 - accept action objects i.e. `dispatch({ type: 'foo' })`
 
