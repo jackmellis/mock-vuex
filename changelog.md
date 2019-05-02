@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.1
+- fixed missing dist files
+
 ## 1.0.0
 - moved entire codebase to typescript and export d.ts files
 - dispatching from non-namespaced modules now works correctly

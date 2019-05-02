@@ -1,6 +1,6 @@
 {
   "name": "mock-vuex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Mock version of Vuex to make unit testing easier",
   "main": "dist/mock-vuex.cjs.js",
   "module": "dist/mock-vuex.es.js",
